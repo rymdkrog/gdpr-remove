@@ -1,9 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "GDPR Remove - Aftonbladet",
-  "version": "1.0.0",
-  "description": "Skickar automatiskt en GDPR-begäran om radering till Aftonbladet när du stänger en flik.",
-  "permissions": ["tabs", "storage", "alarms"],
+  "name": "GDPR Remove",
+  "version": "1.1.0",
+  "description": "Skickar automatiskt en GDPR-begäran om radering när du stänger en flik för konfigurerade sajter.",
+  "permissions": ["tabs", "storage"],
   "host_permissions": ["*://*.aftonbladet.se/*"],
   "homepage_url": "https://github.com/rymdkrog/gdpr-remove",
   "background": {
