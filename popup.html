@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <h1>GDPR Remove</h1>
+  <p class="description">Skickar en GDPR-begäran om radering till Aftonbladet varje gång du stänger en flik.</p>
+
+  <div class="toggle-row">
+    <label class="switch">
+      <input type="checkbox" id="toggle" checked>
+      <span class="slider"></span>
+    </label>
+    <span id="status">Aktiverad</span>
+  </div>
+
+  <div class="counter">
+    <span>Skickade begäranden: <strong id="count">0</strong></span>
+    <button id="reset" title="Nollställ räknare">Nollställ</button>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
