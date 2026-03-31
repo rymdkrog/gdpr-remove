@@ -147,3 +147,16 @@ input:checked + .slider::before {
 .removal-btn.email:hover {
   background: #1d4ed8;
 }
+
+#kofi-link {
+  display: block;
+  margin-top: 14px;
+  font-size: 11px;
+  color: #888;
+  text-decoration: none;
+  text-align: center;
+}
+
+#kofi-link:hover {
+  color: #555;
+}
