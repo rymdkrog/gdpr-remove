@@ -4,7 +4,7 @@
   "version": "1.1.0",
   "description": "Skickar automatiskt en GDPR-begäran om radering när du stänger en flik för konfigurerade sajter.",
   "permissions": ["tabs", "storage"],
-  "host_permissions": ["*://*.aftonbladet.se/*"],
+  "host_permissions": ["*://*.aftonbladet.se/*", "*://*.svd.se/*", "*://*.klart.se/*"],
   "homepage_url": "https://github.com/rymdkrog/gdpr-remove",
   "background": {
     "service_worker": "background.js"
