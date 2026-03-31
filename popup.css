@@ -1,5 +1,5 @@
 body {
-  width: 280px;
+  width: 320px;
   padding: 16px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-size: 14px;
@@ -12,11 +12,22 @@ h1 {
   margin: 0 0 8px;
 }
 
+h2 {
+  font-size: 14px;
+  margin: 0 0 4px;
+}
+
 .description {
   color: #555;
   font-size: 12px;
-  margin: 0 0 16px;
+  margin: 0 0 12px;
   line-height: 1.4;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #e5e5e5;
+  margin: 16px 0;
 }
 
 .toggle-row {
@@ -69,4 +80,70 @@ input:checked + .slider {
 
 input:checked + .slider::before {
   transform: translateX(20px);
+}
+
+/* Removal site list */
+.removal-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.removal-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.removal-item:last-child {
+  border-bottom: none;
+}
+
+.removal-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.removal-name {
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.removal-desc {
+  font-size: 11px;
+  color: #777;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.removal-btn {
+  flex-shrink: 0;
+  margin-left: 8px;
+  padding: 4px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fff;
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.removal-btn:hover {
+  background: #f0f0f0;
+}
+
+.removal-btn.email {
+  background: #2563eb;
+  color: #fff;
+  border-color: #2563eb;
+}
+
+.removal-btn.email:hover {
+  background: #1d4ed8;
 }
