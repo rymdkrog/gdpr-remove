@@ -54,3 +54,8 @@ for (const site of REMOVAL_SITES) {
   li.appendChild(btn);
   removalList.appendChild(li);
 }
+
+document.getElementById("kofi-link").addEventListener("click", (e) => {
+  e.preventDefault();
+  chrome.tabs.create({ url: "https://ko-fi.com/rymdkrog" });
+});
