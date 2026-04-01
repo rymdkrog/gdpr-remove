@@ -82,6 +82,49 @@ input:checked + .slider::before {
   transform: translateX(20px);
 }
 
+/* Section header with progress badge */
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.progress-badge {
+  font-size: 11px;
+  color: #777;
+  background: #f0f0f0;
+  padding: 1px 6px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.progress-badge.all-done {
+  background: #dcfce7;
+  color: #166534;
+}
+
+/* Progress checkbox */
+.progress-check {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  margin: 0 8px 0 0;
+  accent-color: #2563eb;
+  cursor: pointer;
+}
+
+/* Done state */
+.removal-item.done .removal-name,
+.prevention-item.done .prevention-name {
+  color: #aaa;
+  text-decoration: line-through;
+}
+
+.removal-item.done .removal-desc,
+.prevention-item.done .prevention-desc {
+  color: #bbb;
+}
+
 /* Removal site list */
 .removal-list {
   list-style: none;
@@ -146,6 +189,72 @@ input:checked + .slider::before {
 
 .removal-btn.email:hover {
   background: #1d4ed8;
+}
+
+/* Configured sites tooltip */
+.tooltip-trigger {
+  position: relative;
+  color: #2563eb;
+  cursor: default;
+  border-bottom: 1px dotted #2563eb;
+}
+
+.tooltip-content {
+  display: none;
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a1a1a;
+  color: #fff;
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  margin-bottom: 4px;
+  pointer-events: none;
+}
+
+.tooltip-trigger:hover .tooltip-content {
+  display: block;
+}
+
+/* Prevention section */
+.prevention-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.prevention-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.prevention-item:last-child {
+  border-bottom: none;
+}
+
+.prevention-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.prevention-name {
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.prevention-desc {
+  font-size: 11px;
+  color: #777;
+  line-height: 1.3;
 }
 
 #kofi-link {

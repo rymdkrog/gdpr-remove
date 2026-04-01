@@ -6,7 +6,7 @@
 </head>
 <body>
   <h1>GDPR Remove</h1>
-  <p class="description">Skickar en GDPR-begäran om radering varje gång du stänger en flik för en konfigurerad sajt.</p>
+  <p class="description">Skickar en GDPR-begäran om radering varje gång du stänger en flik för <span id="sites-tooltip" class="tooltip-trigger">konfigurerade sajter<span id="sites-list" class="tooltip-content"></span></span>.</p>
 
   <div class="toggle-row">
     <label class="switch">
@@ -18,12 +18,25 @@
 
   <hr>
 
-  <h2>Radera mig från sajter</h2>
+  <div class="section-header">
+    <h2>Radera mig från sajter</h2>
+    <span id="removal-progress" class="progress-badge"></span>
+  </div>
   <p class="description">Begär radering av dina personuppgifter från svenska personsöktjänster.</p>
   <ul id="removal-list" class="removal-list"></ul>
 
+  <hr>
+
+  <div class="section-header">
+    <h2>Förebygg spridning</h2>
+    <span id="prevention-progress" class="progress-badge"></span>
+  </div>
+  <p class="description">Spärra dina uppgifter vid källan och stoppa oönskad marknadsföring.</p>
+  <ul class="prevention-list" id="prevention-list"></ul>
+
   <a href="https://ko-fi.com/rymdkrog" id="kofi-link" target="_blank">☕ Bjud på en kaffe</a>
 
+<script src="sites.js"></script>
 <script src="removal-sites.js"></script>
 <script src="mailto.js"></script>
 <script src="popup.js"></script>
