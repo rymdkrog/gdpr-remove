@@ -39,45 +39,50 @@ const PREVENTION_SITES = [
   },
 ];
 
-// Progress tracking
-function updateProgressBadge(badgeEl, items, progress) {
-  const done = items.filter((item) => progress[item.name]).length;
+// Progress tracking — use a mutable ref object so closures share state
+const progressRef = { current: {} };
+
+function updateProgressBadge(badgeEl, items) {
+  const done = items.filter((item) => progressRef.current[item.name]).length;
   badgeEl.textContent = `${done}/${items.length}`;
   badgeEl.classList.toggle("all-done", done === items.length);
 }
 
-function saveProgress(progress) {
-  chrome.storage.local.set({ progress });
+function saveProgress() {
+  chrome.storage.local.set({ progress: progressRef.current });
 }
 
-chrome.storage.local.get({ progress: {} }, (result) => {
-  const progress = result.progress;
+// Load settings and render
+let cachedTemplateSettings = null;
 
-  renderRemovalList(progress);
-  renderPreventionList(progress);
+getSettings().then((settings) => {
+  progressRef.current = settings.progress;
+  cachedTemplateSettings = getTemplateSettings(settings);
+
+  renderRemovalList(getEffectiveRemovalSites(settings), cachedTemplateSettings);
+  renderPreventionList();
 });
 
-function renderRemovalList(progress) {
+function renderRemovalList(sites, templateSettings) {
   const list = document.getElementById("removal-list");
   const badge = document.getElementById("removal-progress");
 
-  for (const site of REMOVAL_SITES) {
+  for (const site of sites) {
     const li = document.createElement("li");
     li.className = "removal-item";
-    if (progress[site.name]) {
+    if (progressRef.current[site.name]) {
       li.classList.add("done");
     }
 
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.className = "progress-check";
-    checkbox.checked = !!progress[site.name];
+    checkbox.checked = !!progressRef.current[site.name];
     checkbox.addEventListener("change", () => {
-      const updated = { ...progress, [site.name]: checkbox.checked };
-      Object.assign(progress, updated);
+      progressRef.current = { ...progressRef.current, [site.name]: checkbox.checked };
       li.classList.toggle("done", checkbox.checked);
-      saveProgress(updated);
-      updateProgressBadge(badge, REMOVAL_SITES, updated);
+      saveProgress();
+      updateProgressBadge(badge, sites);
     });
 
     const info = document.createElement("div");
@@ -100,9 +105,11 @@ function renderRemovalList(progress) {
 
     btn.addEventListener("click", () => {
       if (site.type === "email") {
-        const mailtoUrl = buildMailtoUrl(site);
-        chrome.tabs.create({ url: mailtoUrl });
-      } else {
+        const mailtoUrl = buildMailtoUrl(site, templateSettings);
+        if (isMailtoUrl(mailtoUrl)) {
+          chrome.tabs.create({ url: mailtoUrl });
+        }
+      } else if (isHttpsUrl(site.url)) {
         chrome.tabs.create({ url: site.url });
       }
     });
@@ -113,30 +120,29 @@ function renderRemovalList(progress) {
     list.appendChild(li);
   }
 
-  updateProgressBadge(badge, REMOVAL_SITES, progress);
+  updateProgressBadge(badge, sites);
 }
 
-function renderPreventionList(progress) {
+function renderPreventionList() {
   const list = document.getElementById("prevention-list");
   const badge = document.getElementById("prevention-progress");
 
   for (const site of PREVENTION_SITES) {
     const li = document.createElement("li");
     li.className = "prevention-item";
-    if (progress[site.name]) {
+    if (progressRef.current[site.name]) {
       li.classList.add("done");
     }
 
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.className = "progress-check";
-    checkbox.checked = !!progress[site.name];
+    checkbox.checked = !!progressRef.current[site.name];
     checkbox.addEventListener("change", () => {
-      const updated = { ...progress, [site.name]: checkbox.checked };
-      Object.assign(progress, updated);
+      progressRef.current = { ...progressRef.current, [site.name]: checkbox.checked };
       li.classList.toggle("done", checkbox.checked);
-      saveProgress(updated);
-      updateProgressBadge(badge, PREVENTION_SITES, updated);
+      saveProgress();
+      updateProgressBadge(badge, PREVENTION_SITES);
     });
 
     const info = document.createElement("div");
@@ -157,7 +163,9 @@ function renderPreventionList(progress) {
     btn.className = "removal-btn url";
     btn.textContent = "Öppna";
     btn.addEventListener("click", () => {
-      chrome.tabs.create({ url: site.url });
+      if (isHttpsUrl(site.url)) {
+        chrome.tabs.create({ url: site.url });
+      }
     });
 
     li.appendChild(checkbox);
@@ -166,8 +174,33 @@ function renderPreventionList(progress) {
     list.appendChild(li);
   }
 
-  updateProgressBadge(badge, PREVENTION_SITES, progress);
+  updateProgressBadge(badge, PREVENTION_SITES);
 }
+
+// Copy email template
+document.getElementById("copy-template-btn").addEventListener("click", async () => {
+  const btn = document.getElementById("copy-template-btn");
+  const settings = cachedTemplateSettings || getTemplateSettings(await getSettings());
+  const today = new Date().toISOString().split("T")[0];
+  const userName = settings.userName || "[ANGE DITT NAMN]";
+  const body = settings.body
+    ? settings.body
+        .replace("{{mottagare}}", "[MOTTAGARE]")
+        .replace("{{datum}}", today)
+        .replace("{{namn}}", userName)
+    : buildDefaultBody("[MOTTAGARE]", today, settings.userName);
+
+  await navigator.clipboard.writeText(body);
+  btn.textContent = "Kopierad!";
+  setTimeout(() => {
+    btn.textContent = "Kopiera e-postmall";
+  }, 1500);
+});
+
+// Settings button
+document.getElementById("settings-btn").addEventListener("click", () => {
+  chrome.tabs.create({ url: chrome.runtime.getURL("options.html") });
+});
 
 document.getElementById("kofi-link").addEventListener("click", (e) => {
   e.preventDefault();
