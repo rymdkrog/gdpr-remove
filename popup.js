@@ -16,6 +16,10 @@ toggle.addEventListener("change", () => {
   updateStatus(enabled);
 });
 
+// Populate configured sites tooltip
+const sitesList = document.getElementById("sites-list");
+sitesList.textContent = SITES.map((s) => s.name).join(", ");
+
 // Render on-demand removal site list
 const removalList = document.getElementById("removal-list");
 

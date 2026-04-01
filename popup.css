@@ -148,6 +148,34 @@ input:checked + .slider::before {
   background: #1d4ed8;
 }
 
+/* Configured sites tooltip */
+.tooltip-trigger {
+  position: relative;
+  color: #2563eb;
+  cursor: default;
+  border-bottom: 1px dotted #2563eb;
+}
+
+.tooltip-content {
+  display: none;
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a1a1a;
+  color: #fff;
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  margin-bottom: 4px;
+  pointer-events: none;
+}
+
+.tooltip-trigger:hover .tooltip-content {
+  display: block;
+}
+
 #kofi-link {
   display: block;
   margin-top: 14px;

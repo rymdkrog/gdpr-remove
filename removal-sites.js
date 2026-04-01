@@ -57,9 +57,25 @@ const REMOVAL_SITES = [
   },
   {
     name: "180.se",
-    type: "url",
-    url: "https://www.180.se/kontakta",
+    type: "email",
+    email: "support@180.se",
+    dataController: "180 Telefonkatalogen AB",
+    orgNumber: "",
     description: "Telefonnummerregister",
+  },
+  {
+    name: "Lexbase",
+    type: "email",
+    email: "info@lexbase.se",
+    dataController: "Legal Newsdesk Sweden AB",
+    orgNumber: "",
+    description: "Domstolsbeslut och rättsliga handlingar",
+  },
+  {
+    name: "Truecaller",
+    type: "url",
+    url: "https://www.truecaller.com/unlisting",
+    description: "Telefonnummeridentifiering (avlistning tar upp till 24h)",
   },
   {
     name: "Google (Right to be Forgotten)",
