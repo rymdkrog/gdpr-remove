@@ -1,12 +1,17 @@
 importScripts("sites.js");
 importScripts("mailto.js");
+importScripts("settings.js");
 
 // Map of tabId → site config for tracked tabs
 const trackedTabs = new Map();
 
+// Cached settings
+let cachedTemplateSettings = null;
+let effectiveTrackedSites = [];
+
 function matchSite(url) {
   if (!url) return null;
-  for (const site of SITES) {
+  for (const site of effectiveTrackedSites) {
     const pattern = new RegExp(
       `^https?://([^/]*\\.)?${site.domain.replace(".", "\\.")}`,
       "i",
@@ -17,11 +22,20 @@ function matchSite(url) {
 }
 
 function buildQueryPatterns() {
-  return SITES.map((site) => `*://*.${site.domain}/*`);
+  return effectiveTrackedSites.map((site) => `*://*.${site.domain}/*`);
 }
 
 async function initTracking() {
-  const tabs = await chrome.tabs.query({ url: buildQueryPatterns() });
+  const settings = await getSettings();
+  cachedTemplateSettings = getTemplateSettings(settings);
+  effectiveTrackedSites = getEffectiveTrackedSites(settings);
+
+  trackedTabs.clear();
+
+  const patterns = buildQueryPatterns();
+  if (patterns.length === 0) return;
+
+  const tabs = await chrome.tabs.query({ url: patterns });
   for (const tab of tabs) {
     const site = matchSite(tab.url);
     if (site) {
@@ -29,8 +43,6 @@ async function initTracking() {
     }
   }
 }
-
-// buildMailtoUrl is loaded from mailto.js via importScripts
 
 async function isEnabled() {
   const result = await chrome.storage.local.get({ enabled: true });
@@ -41,7 +53,12 @@ async function showConfirmation(site) {
   const enabled = await isEnabled();
   if (!enabled) return;
 
-  const mailtoUrl = buildMailtoUrl(site);
+  if (!cachedTemplateSettings) {
+    const settings = await getSettings();
+    cachedTemplateSettings = getTemplateSettings(settings);
+  }
+
+  const mailtoUrl = buildMailtoUrl(site, cachedTemplateSettings);
   const confirmUrl =
     chrome.runtime.getURL("confirm.html") +
     `?name=${encodeURIComponent(site.name)}` +
@@ -77,6 +94,16 @@ chrome.tabs.onRemoved.addListener((tabId) => {
   if (site) {
     trackedTabs.delete(tabId);
     showConfirmation(site);
+  }
+});
+
+// Re-initialize when settings change
+chrome.storage.onChanged.addListener((changes) => {
+  if (changes.userName || changes.emailTemplate) {
+    cachedTemplateSettings = null;
+  }
+  if (changes.hiddenTrackedSites || changes.customTrackedSites) {
+    initTracking();
   }
 });
 

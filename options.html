@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <title>Inställningar — GDPR Remove</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="container">
+    <h1>GDPR Remove — Inställningar</h1>
+
+    <section>
+      <h2>Ditt namn</h2>
+      <p class="hint">Ersätter [ANGE DITT NAMN] i alla e-postmeddelanden.</p>
+      <input type="text" id="user-name" placeholder="Förnamn Efternamn">
+    </section>
+
+    <section>
+      <h2>E-postmall</h2>
+      <p class="hint">Anpassa ämnesraden och brödtexten i GDPR-begäran. Använd platshållare: <code>{{mottagare}}</code>, <code>{{datum}}</code>, <code>{{namn}}</code>.</p>
+
+      <label for="email-subject">Ämne</label>
+      <input type="text" id="email-subject">
+
+      <label for="email-body">Brödtext</label>
+      <textarea id="email-body" rows="18"></textarea>
+
+      <button id="reset-template" class="btn secondary">Återställ standardmall</button>
+    </section>
+
+    <section>
+      <h2>Flikstängningssajter</h2>
+      <p class="hint">Sajter som utlöser en GDPR-begäran när du stänger fliken. Nya sajter kräver webbläsarbehörighet.</p>
+      <ul id="default-tracked-list" class="site-list"></ul>
+
+      <h3>Egna sajter</h3>
+      <ul id="custom-tracked-list" class="site-list"></ul>
+      <p id="no-custom-tracked" class="empty-msg">Inga egna sajter tillagda.</p>
+
+      <div class="add-form" id="add-tracked-form">
+        <div class="form-row">
+          <div class="form-field">
+            <label for="tracked-domain">Domän</label>
+            <input type="text" id="tracked-domain" placeholder="example.com">
+          </div>
+          <div class="form-field">
+            <label for="tracked-email">E-post</label>
+            <input type="email" id="tracked-email" placeholder="gdpr@example.com">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label for="tracked-controller">Personuppgiftsansvarig</label>
+            <input type="text" id="tracked-controller" placeholder="Företag AB">
+          </div>
+          <div class="form-field">
+            <label for="tracked-org">Org.nummer</label>
+            <input type="text" id="tracked-org" placeholder="123456-7890">
+          </div>
+        </div>
+        <button id="add-tracked-btn" class="btn primary">Lägg till</button>
+        <span id="tracked-error" class="form-error hidden"></span>
+      </div>
+    </section>
+
+    <section>
+      <h2>Raderingssajter</h2>
+      <p class="hint">Visa eller dölj sajter i popupens raderingslista.</p>
+      <ul id="default-removal-list" class="site-list"></ul>
+    </section>
+
+    <section>
+      <h2>Anmäl till IMY</h2>
+      <p class="hint">Om en sajt inte svarat på din raderingsbegäran inom 30 dagar kan du anmäla till Integritetsskyddsmyndigheten.</p>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label for="imy-site">Välj sajt</label>
+          <select id="imy-site"></select>
+        </div>
+      </div>
+      <button id="imy-btn" class="btn imy">Skicka klagomål till IMY</button>
+    </section>
+
+    <div id="save-indicator" class="save-indicator hidden">Sparat</div>
+  </div>
+
+<script src="sites.js"></script>
+<script src="removal-sites.js"></script>
+<script src="mailto.js"></script>
+<script src="settings.js"></script>
+<script src="options.js"></script>
+</body>
+</html>
