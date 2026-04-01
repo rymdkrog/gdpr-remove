@@ -59,6 +59,19 @@ for (const site of REMOVAL_SITES) {
   removalList.appendChild(li);
 }
 
+// Prevention links
+const PREVENTION_LINKS = {
+  "spar-btn": "https://www.statenspersonadressregister.se/master/start/personuppgifter/behandling-av-personuppgifter/e-tjaenst-reklamspaerr/",
+  "nix-telefon-btn": "https://www.nixtelefon.org/jag-vill",
+  "nix-adresserat-btn": "https://www.swedma.se/reklamsparr/nix-adresserat/nix-adresserat-konsumentinformation/",
+};
+
+for (const [id, url] of Object.entries(PREVENTION_LINKS)) {
+  document.getElementById(id).addEventListener("click", () => {
+    chrome.tabs.create({ url });
+  });
+}
+
 document.getElementById("kofi-link").addEventListener("click", (e) => {
   e.preventDefault();
   chrome.tabs.create({ url: "https://ko-fi.com/rymdkrog" });
