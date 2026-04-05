@@ -36,4 +36,11 @@ const SITES = [
     dataController: "Schibsted News Media AB",
     orgNumber: "559343-3666",
   },
+  {
+    name: "Omni",
+    domain: "omni.se",
+    email: "annonsval@schibsted.se",
+    dataController: "Schibsted News Media AB",
+    orgNumber: "559343-3666",
+  },
 ];

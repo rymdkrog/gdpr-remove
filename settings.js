@@ -14,6 +14,7 @@ const SETTINGS_DEFAULTS = {
   hiddenRemovalSites: [],
   hiddenTrackedSites: [],
   customTrackedSites: [],
+  bannerRemovalEnabled: true,
 };
 
 async function getSettings() {

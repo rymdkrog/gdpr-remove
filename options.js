@@ -294,12 +294,22 @@ document.getElementById("imy-btn").addEventListener("click", () => {
   }
 });
 
+// ---- Banner removal toggle ----
+
+const bannerRemovalToggle = document.getElementById("banner-removal-toggle");
+
+bannerRemovalToggle.addEventListener("change", () => {
+  save({ bannerRemovalEnabled: bannerRemovalToggle.checked });
+});
+
 // ---- Load everything ----
 
 getSettings().then((settings) => {
   userNameInput.value = settings.userName;
   subjectInput.value = settings.emailTemplate.subject || DEFAULT_SUBJECT;
   bodyInput.value = settings.emailTemplate.body || getDefaultBodyWithPlaceholders();
+
+  bannerRemovalToggle.checked = settings.bannerRemovalEnabled;
 
   hiddenRemovalSites = settings.hiddenRemovalSites;
   hiddenTrackedSites = settings.hiddenTrackedSites;

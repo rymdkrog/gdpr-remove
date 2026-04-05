@@ -13,6 +13,7 @@ zip -r "$OUT" \
   removal-sites.js \
   mailto.js \
   settings.js \
+  content-banner-remover.js \
   popup.html \
   popup.js \
   popup.css \
