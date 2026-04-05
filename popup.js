@@ -39,8 +39,9 @@ const PREVENTION_SITES = [
   },
 ];
 
-// Progress tracking — use a mutable ref object so closures share state
+// Progress tracking — use mutable ref objects so closures share state
 const progressRef = { current: {} };
+const hiddenRemovalSitesRef = { current: [] };
 
 function updateProgressBadge(badgeEl, items) {
   const done = items.filter((item) => progressRef.current[item.name]).length;
@@ -57,6 +58,7 @@ let cachedTemplateSettings = null;
 
 getSettings().then((settings) => {
   progressRef.current = settings.progress;
+  hiddenRemovalSitesRef.current = settings.hiddenRemovalSites;
   cachedTemplateSettings = getTemplateSettings(settings);
 
   renderRemovalList(getEffectiveRemovalSites(settings), cachedTemplateSettings);
@@ -82,7 +84,13 @@ function renderRemovalList(sites, templateSettings) {
       progressRef.current = { ...progressRef.current, [site.name]: checkbox.checked };
       li.classList.toggle("done", checkbox.checked);
       saveProgress();
-      updateProgressBadge(badge, sites);
+      updateProgressBadge(badge, REMOVAL_SITES);
+      if (checkbox.checked) {
+        hiddenRemovalSitesRef.current = [...hiddenRemovalSitesRef.current, site.name];
+      } else {
+        hiddenRemovalSitesRef.current = hiddenRemovalSitesRef.current.filter((n) => n !== site.name);
+      }
+      chrome.storage.local.set({ hiddenRemovalSites: hiddenRemovalSitesRef.current });
     });
 
     const info = document.createElement("div");
@@ -120,7 +128,7 @@ function renderRemovalList(sites, templateSettings) {
     list.appendChild(li);
   }
 
-  updateProgressBadge(badge, sites);
+  updateProgressBadge(badge, REMOVAL_SITES);
 }
 
 function renderPreventionList() {
