@@ -79,7 +79,9 @@ chrome.tabs.onUpdated.addListener((_tabId, changeInfo, tab) => {
     if (site) {
       trackedTabs.set(tab.id, site);
     } else {
+      const previousSite = trackedTabs.get(tab.id);
       trackedTabs.delete(tab.id);
+      if (previousSite) showConfirmation(previousSite);
     }
   } else if (changeInfo.status === "complete") {
     const site = matchSite(tab.url);
